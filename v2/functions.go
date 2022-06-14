@@ -1390,13 +1390,13 @@ func MonitorFromWindow(hwnd HWND, dwFlags uint32) HMONITOR {
 }
 
 // GetMonitorInfo automatically sets the MONITORINFO's CbSize field.
-func GetMonitorInfo(hMonitor HMONITOR, lmpi *MONITORINFO) bool {
-	if lmpi != nil {
-		lmpi.CbSize = uint32(unsafe.Sizeof(*lmpi))
+func GetMonitorInfo(hMonitor HMONITOR, lpmi *MONITORINFO) bool {
+	if lpmi != nil {
+		lpmi.CbSize = uint32(unsafe.Sizeof(*lpmi))
 	}
 	ret, _, _ := getMonitorInfo.Call(
 		uintptr(hMonitor),
-		uintptr(unsafe.Pointer(lmpi)),
+		uintptr(unsafe.Pointer(lpmi)),
 	)
 	return ret != 0
 }
