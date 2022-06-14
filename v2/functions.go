@@ -1960,6 +1960,9 @@ func SetMenuDefaultItem(m HMENU, item, byPos uint) bool {
 
 // SetMenuInfo sets information for a specified menu.
 func SetMenuInfo(m HMENU, info *MENUINFO) bool {
+	if info != nil {
+		info.size = uint32(unsafe.Sizeof(*info))
+	}
 	ret, _, _ := setMenuInfo.Call(
 		uintptr(m),
 		uintptr(unsafe.Pointer(info)),
@@ -2494,7 +2497,7 @@ func ControlService(service HANDLE, control uint32, serviceStatus *SERVICE_STATU
 
 func InitCommonControlsEx(lpInitCtrls *INITCOMMONCONTROLSEX) bool {
 	if lpInitCtrls != nil {
-		lpInitCtrls.size = 8
+		lpInitCtrls.size = uint32(unsafe.Sizeof(*lpInitCtrls))
 	}
 	ret, _, _ := initCommonControlsEx.Call(uintptr(unsafe.Pointer(lpInitCtrls)))
 	return ret != 0
