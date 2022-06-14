@@ -1028,7 +1028,7 @@ func DialogBox(hInstance HINSTANCE, lpTemplateName *uint16, hWndParent HWND, lpD
 
 func GetDlgItem(hDlg HWND, nIDDlgItem int) HWND {
 	ret, _, _ := getDlgItem.Call(
-		uintptr(unsafe.Pointer(hDlg)),
+		uintptr(hDlg),
 		uintptr(nIDDlgItem),
 	)
 	return HWND(ret)
@@ -1039,10 +1039,10 @@ func DrawIconEx(
 	frame uint, flickerFreeDraw HBRUSH, flags uint,
 ) bool {
 	ret, _, _ := drawIconEx.Call(
-		uintptr(unsafe.Pointer(hDC)),
+		uintptr(hDC),
 		uintptr(x),
 		uintptr(y),
-		uintptr(unsafe.Pointer(hIcon)),
+		uintptr(hIcon),
 		uintptr(width),
 		uintptr(height),
 		uintptr(frame),
@@ -1054,10 +1054,10 @@ func DrawIconEx(
 
 func DrawIcon(hDC HDC, x, y int, hIcon HICON) bool {
 	ret, _, _ := drawIcon.Call(
-		uintptr(unsafe.Pointer(hDC)),
+		uintptr(hDC),
 		uintptr(x),
 		uintptr(y),
-		uintptr(unsafe.Pointer(hIcon)),
+		uintptr(hIcon),
 	)
 	return ret != 0
 }
@@ -3668,7 +3668,7 @@ func GlobalUnlock(hMem HGLOBAL) bool {
 
 func MoveMemory(destination, source unsafe.Pointer, length uint32) {
 	moveMemory.Call(
-		uintptr(unsafe.Pointer(destination)),
+		uintptr(destination),
 		uintptr(source),
 		uintptr(length),
 	)
