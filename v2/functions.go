@@ -2181,7 +2181,7 @@ func RegCloseKey(hKey HKEY) error {
 	return err
 }
 
-func RegGetRaw(hKey HKEY, subKey string, value string) []byte {
+func RegGetRaw(hKey HKEY, subKey, value string) []byte {
 	var bufLen uint32
 	var valptr unsafe.Pointer
 	if len(value) > 0 {
@@ -2238,7 +2238,7 @@ func RegSetBinary(hKey HKEY, subKey string, value []byte) (errno int) {
 	return int(ret)
 }
 
-func RegSetString(hKey HKEY, subKey string, value string) (errno int) {
+func RegSetString(hKey HKEY, subKey, value string) (errno int) {
 	var lptr, vptr unsafe.Pointer
 	if subKey != "" {
 		lptr = unsafe.Pointer(syscall.StringToUTF16Ptr(subKey))
@@ -2280,7 +2280,7 @@ func RegSetUint32(hKey HKEY, subKey string, value uint32) (errno int) {
 	return int(ret)
 }
 
-func RegGetString(hKey HKEY, subKey string, value string) string {
+func RegGetString(hKey HKEY, subKey, value string) string {
 	var bufLen uint32
 	regGetValue.Call(
 		uintptr(hKey),
@@ -2314,7 +2314,7 @@ func RegGetString(hKey HKEY, subKey string, value string) string {
 	return syscall.UTF16ToString(buf)
 }
 
-func RegGetUint32(hKey HKEY, subKey string, value string) (data uint32, errno int) {
+func RegGetUint32(hKey HKEY, subKey, value string) (data uint32, errno int) {
 	var dataLen uint32 = uint32(unsafe.Sizeof(data))
 	ret, _, _ := regGetValue.Call(
 		uintptr(hKey),
@@ -2329,7 +2329,7 @@ func RegGetUint32(hKey HKEY, subKey string, value string) (data uint32, errno in
 	return
 }
 
-func RegDeleteKeyValue(hKey HKEY, subKey string, valueName string) (errno int) {
+func RegDeleteKeyValue(hKey HKEY, subKey, valueName string) (errno int) {
 	ret, _, _ := regDeleteKeyValue.Call(
 		uintptr(hKey),
 		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(subKey))),
@@ -2381,7 +2381,7 @@ func RegEnumValue(key HKEY, index uint32) {
 	)
 }
 
-func OpenEventLog(servername string, sourcename string) HANDLE {
+func OpenEventLog(servername, sourcename string) HANDLE {
 	ret, _, _ := openEventLog.Call(
 		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(servername))),
 		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(sourcename))),
@@ -2571,7 +2571,7 @@ func TrackMouseEvent(tme *TRACKMOUSEEVENT) bool {
 	return ret != 0
 }
 
-func SetWindowSubclass(window HWND, proc uintptr, id uintptr, refData uintptr) bool {
+func SetWindowSubclass(window HWND, proc, id, refData uintptr) bool {
 	ret, _, _ := setWindowSubclass.Call(
 		uintptr(window),
 		proc,
@@ -2668,7 +2668,7 @@ func DwmGetCompositionTimingInfo(hWnd HWND, pTimingInfo *DWM_TIMING_INFO) HRESUL
 	return HRESULT(ret)
 }
 
-func DwmGetTransportAttributes(pfIsRemoting *BOOL, pfIsConnected *BOOL, pDwGeneration *uint32) HRESULT {
+func DwmGetTransportAttributes(pfIsRemoting, pfIsConnected *BOOL, pDwGeneration *uint32) HRESULT {
 	ret, _, _ := dwmGetTransportAttributes.Call(
 		uintptr(unsafe.Pointer(pfIsRemoting)),
 		uintptr(unsafe.Pointer(pfIsConnected)),
@@ -2751,7 +2751,7 @@ func DwmQueryThumbnailSourceSize(hThumbnail HTHUMBNAIL, pSize *SIZE) HRESULT {
 	return HRESULT(ret)
 }
 
-func DwmRegisterThumbnail(hWndDestination HWND, hWndSource HWND, phThumbnailId *HTHUMBNAIL) HRESULT {
+func DwmRegisterThumbnail(hWndDestination, hWndSource HWND, phThumbnailId *HTHUMBNAIL) HRESULT {
 	ret, _, _ := dwmRegisterThumbnail.Call(
 		uintptr(hWndDestination),
 		uintptr(hWndSource),
@@ -3373,7 +3373,7 @@ func SetDCBrushColor(hdc HDC, color COLORREF) COLORREF {
 	return COLORREF(ret)
 }
 
-func CreatePen(style int, width int, color COLORREF) HPEN {
+func CreatePen(style, width int, color COLORREF) HPEN {
 	ret, _, _ := createPen.Call(
 		uintptr(style),
 		uintptr(width),
