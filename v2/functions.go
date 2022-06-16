@@ -4033,7 +4033,7 @@ func CoUninitialize() {
 }
 
 func CreateStreamOnHGlobal(global HGLOBAL, deleteOnRelease bool) (*IStream, HRESULT) {
-	stream := new(IStream)
+	var stream *IStream
 	ret, _, _ := createStreamOnHGlobal.Call(
 		uintptr(global),
 		uintptr(BoolToBOOL(deleteOnRelease)),
