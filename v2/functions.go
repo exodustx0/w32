@@ -3561,8 +3561,8 @@ func (t FontType) String() string {
 func EnumFontFamiliesEx(hdc HDC, font LOGFONT, f func(font *ENUMLOGFONTEX, metric *ENUMTEXTMETRIC, fontType FontType) bool) {
 	callback := syscall.NewCallback(func(font, metric uintptr, typ uint32, _ uintptr) uintptr {
 		if f(
-			(*ENUMLOGFONTEX)(unsafe.Pointer(font)),
-			(*ENUMTEXTMETRIC)(unsafe.Pointer(metric)),
+			*(**ENUMLOGFONTEX)(unsafe.Pointer(&font)),
+			*(**ENUMTEXTMETRIC)(unsafe.Pointer(&metric)),
 			FontType(typ),
 		) {
 			return 1
@@ -3661,7 +3661,7 @@ func GlobalFree(hMem HGLOBAL) {
 
 func GlobalLock(hMem HGLOBAL) unsafe.Pointer {
 	ret, _, _ := globalLock.Call(uintptr(hMem))
-	return unsafe.Pointer(ret)
+	return *(*unsafe.Pointer)(unsafe.Pointer(&ret))
 }
 
 func GlobalUnlock(hMem HGLOBAL) bool {
@@ -3698,7 +3698,7 @@ func SizeofResource(hModule HMODULE, hResInfo HRSRC) uint32 {
 
 func LockResource(hResData HGLOBAL) unsafe.Pointer {
 	ret, _, _ := lockResource.Call(uintptr(hResData))
-	return unsafe.Pointer(ret)
+	return *(*unsafe.Pointer)(unsafe.Pointer(&ret))
 }
 
 func LoadResource(hModule HMODULE, hResInfo HRSRC) HGLOBAL {
@@ -4051,7 +4051,7 @@ func SysAllocString(v string) (ss *int16) {
 	pss, _, _ := sysAllocString.Call(
 		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(v))),
 	)
-	ss = (*int16)(unsafe.Pointer(pss))
+	ss = *(**int16)(unsafe.Pointer(&pss))
 	return
 }
 
@@ -4414,7 +4414,7 @@ func GdiplusStartup(input *GdiplusStartupInput, output *GdiplusStartupOutput) (t
 }
 
 func MakeIntResource(id uint16) *uint16 {
-	return (*uint16)(unsafe.Pointer(uintptr(id)))
+	return *(**uint16)(unsafe.Pointer(&id))
 }
 
 func LOWORD(dw uint32) uint16 {
