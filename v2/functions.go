@@ -4239,7 +4239,7 @@ func ShellExecute(hwnd HWND, lpOperation, lpFile, lpParameters, lpDirectory stri
 
 	errorMsg := ""
 	if ret != 0 && ret <= 32 {
-		switch int(ret) {
+		switch ret {
 		case ERROR_FILE_NOT_FOUND:
 			errorMsg = "The specified file was not found."
 		case ERROR_PATH_NOT_FOUND:
