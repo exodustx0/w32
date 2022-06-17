@@ -4238,8 +4238,10 @@ func ShellExecute(hwnd HWND, lpOperation, lpFile, lpParameters, lpDirectory stri
 		uintptr(nShowCmd))
 
 	errorMsg := ""
-	if ret != 0 && ret <= 32 {
+	if ret <= 32 {
 		switch ret {
+		case 0:
+			errorMsg = "The operating system is out of memory or resources."
 		case ERROR_FILE_NOT_FOUND:
 			errorMsg = "The specified file was not found."
 		case ERROR_PATH_NOT_FOUND:
